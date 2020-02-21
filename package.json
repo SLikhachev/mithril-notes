@@ -1,0 +1,10 @@
+{
+  "name": "notes-mithril-app",
+  "devDependencies": {
+    "rollup": "^1.32.0",
+    "rollup-plugin-terser": "^5.0.0"
+  },
+  "dependencies": {
+    "purecss": "^1.0.1"
+  }
+}
