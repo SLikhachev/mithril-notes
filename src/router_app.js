@@ -1,12 +1,16 @@
 
-import { appApi } from './appApi';
+import { restApi, appApi } from './appApi';
+import { moModel } from './model/moModel';
 import { vuView, vuApp } from './view/vuApp';
 import { vuNavBar } from './view/vuNavBar';
 
 // 
 const appRouter = { [appApi.root]: {
-  render() { return vuView( {menu: vuNavBar},
-    m(vuApp, {text: 'Common'} ) );
+  render() {
+    const view = m(vuApp, {
+      model: moModel.getModel( restApi.notes ),
+    });
+    return vuView( {menu: vuNavBar}, view);
   }
 }};
 

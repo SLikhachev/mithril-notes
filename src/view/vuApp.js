@@ -1,4 +1,5 @@
 
+import { moModel } from '../model/moModel';
 import { vuNotes } from './vuNotes';
 import { vuNoteForm } from './vuNoteForm';
 
@@ -16,8 +17,10 @@ const vuMain= function(vnode) {
 export const vuView= (appMenu, view)=> m(vuMain, appMenu, view);
 
 export const vuApp= function(vnode) {
+  const { model }= vnode.attrs;
+  moModel.getList( model );
   
   return { view() { 
-    return [ m(vuNotes), m(vuNoteForm) ];
+    return [ m(vuNotes, { model }), m(vuNoteForm, { model }) ];
   }};
 }

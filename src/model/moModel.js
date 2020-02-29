@@ -11,9 +11,10 @@ export const errMsg= function(error){
   return e.details ? e.details : e.message ? e.message : e;
 }
 
-// SQL agnostic model, exclude 'ddel' table field  
+// namespae for app model
+// PostgREST SQL model, assumed existance 'ddel' table field  
 export const moModel= {
-  
+  // getModel:: Object-> Object
   getModel(
     {url=null, method="GET", order_by='id', editable=null} = {}
   ) {
@@ -30,11 +31,13 @@ export const moModel= {
       editable: editable,
       key: order_by, // here single primary key only
       list: null, // main data list 
-      item: null,
+      item: null, // note item
       error: null, // Promise all error
       save: null, // save status
+      editMode: false // view switch flag
     };  
     model.getItem= id => {
+      model.editMode= true;
       model.item= {};
       if (id === null) return false; 
       const key= model.key;
@@ -49,9 +52,14 @@ export const moModel= {
     
     return model;
   },
-  // :: Object -> Promise
-  // 
-  // 
+  
+  //cancel:: Object-> Promise
+  cancel(model) {
+    model.editMode=false;
+    return moModel.getList(model);
+  },
+
+  // getList:: Object-> Promise
   getList (model) {
     model.list= null;
     const method= model.method ? model.method : 'GET';
@@ -81,6 +89,7 @@ export const moModel= {
     });
   },
   
+  // formSubmit:: Object-> Object-> String-> Promise
   formSubmit(event, model, method) {
     event.target.parentNode.classList.add('disable');
     const key= model.key ? model.key : 'id';
