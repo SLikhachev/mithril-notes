@@ -2,6 +2,16 @@
 import { moModel } from '../model/moModel';
 import { vuNotes } from './vuNotes';
 import { vuNoteForm } from './vuNoteForm';
+import { vuDialog } from './vuDialog';
+
+const vuConfirm= function(vnode) {
+  const { model }= vnode.attrs;
+  
+  return { view () {
+    return m('div');
+    
+  }};
+}
 
 const vuMain= function(vnode) {
   const { menu }= vnode.attrs;
@@ -21,6 +31,12 @@ export const vuApp= function(vnode) {
   moModel.getList( model );
   
   return { view() { 
-    return [ m(vuNotes, { model }), m(vuNoteForm, { model }) ];
+    return [
+      m(vuNotes, { model }),
+      m(vuNoteForm, { model }),
+      m(vuDialog, { header: 'Confirm', word: model.word },
+        m(vuConfirm, { model })
+      )
+    ];
   }};
 }

@@ -1,4 +1,6 @@
 
+import { vuDialog } from './vuDialog';
+
 const clean= str=> str.replace(/[^а-яa-z0-9\.,_-]/gim,'').trim();
 
 export const vuNoteForm= function(vnode) {
@@ -7,6 +9,8 @@ export const vuNoteForm= function(vnode) {
   const _new= ()=> item.meta ? 'Edit' : 'Add';
   const _method= ()=> item.meta ? 'PATCH' : 'POST';
   const _cancel= ()=> moModel.cancel(model);
+  const _display= ()=> model.editMode ? 'display:block': 'display:none';
+  
   const _submit= e=> {
     e.preventDefault();
     item.title= clean(item.title);
@@ -20,8 +24,9 @@ export const vuNoteForm= function(vnode) {
       ()=> { model.editMode=false; return true;}).catch(
       err => { model.error=err; vuDialog.open(); return false; } );
   };
+  
   return { view(){
-    return m('.pure-g', { display: model.editMode ? 'block': 'none' },
+    return m('.pure-g', { style: _display() },
     m('.pure-u-1-2.pure-u-md-1-1', 
       m('form.pure-form.pure-form-stacked', { onsubmit: _submit}, 
         m('fieldset', [

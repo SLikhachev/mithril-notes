@@ -28,12 +28,16 @@ const vuNote= note=> m('section.note', [
 //Notes List
 export const vuNotes= function(vnode) {
   const { model }= vnode.attrs;
+  const _display= ()=> model.editMode ? 'display:none': 'display:block';
   
   return { view() {
-    return model.editMode ? '' : !model.list ? m('h1', '...LOADING' ) :
-    [ m(addButton , { model }),
-    m('.pure-g', m('.pure-u-1-2.pure-u-md-1-1',
-      m('.notes', model.list.map( vuNote ) )
-    )) ];
+    return model.error ? m('h2', {style: 'color:red'}, model.error) :
+    !model.list ? m('h1', '...LOADING' ) :
+    m('div', { style: _display() }, [
+      m(addButton , { model } ),
+      m('.pure-g', m('.pure-u-1-2.pure-u-md-1-1',
+        m('.notes', model.list.map( vuNote ) )
+      ))
+    ]);
   }};
 }

@@ -31,7 +31,7 @@ export const moModel= {
       editable: editable,
       key: order_by, // here single primary key only
       list: null, // main data list 
-      item: null, // note item
+      item: {}, // note item
       error: null, // Promise all error
       save: null, // save status
       editMode: false // view switch flag
