@@ -2,7 +2,7 @@
 import { vuDialog } from '../view/vuDialog';
 
 // backend REST server listening on 
-export const _schema= ()=> 'http://localhost:5000';
+export const _schema= ()=> 'http://localhost:5000/'; // see final slash 
 
 export const errMsg= function(error){
   if ( !error)
@@ -72,6 +72,7 @@ export const moModel= {
       sign= '&';
     }
     url =`${_schema('rest')}${url}${sign}order=${id}.asc`;
+    console.log(url);
     return m.request({
       method: method,
       url: url,
@@ -91,11 +92,13 @@ export const moModel= {
   
   // formSubmit:: Object-> Object-> String-> Promise
   formSubmit(event, model, method) {
+    //console.log(item);
     event.target.parentNode.classList.add('disable');
     const key= model.key ? model.key : 'id';
     const sign= model.url.includes('?') ? '&': '?';
     let url = `${_schema('rest')}${model.url}`;
     let data= Object.assign({}, model.item);
+   
     let _method= method; // 
     if ( _method === 'PATCH' || _method === 'DELETE') {
       url += `${sign}${key}=eq.${data[key]}`; 

@@ -1,5 +1,5 @@
 
-// Add Note Button
+
 const addButton= vnode=> {
   const _new_note= ()=> vnode.attrs.model.getItem(null);
   return { view() { return m('.pure-g', 
@@ -15,7 +15,7 @@ const addButton= vnode=> {
 // Single Note 
 const vuNote= note=> m('section.note', [
   m('header.note-header', [ m('p.note-meta', [
-    note.meta,
+    note.created,
     m('a.note-pan', m('i.fas.fa-trash' )),
     m('a.note-pan', m('i.fas.fa-pen' )),
     m('a.note-pan', m('i.fas.fa-check' ))
@@ -29,7 +29,7 @@ const vuNote= note=> m('section.note', [
 export const vuNotes= function(vnode) {
   const { model }= vnode.attrs;
   const _display= ()=> model.editMode ? 'display:none': 'display:block';
-  
+
   return { view() {
     return model.error ? m('h2', {style: 'color:red'}, model.error) :
     !model.list ? m('h1', '...LOADING' ) :

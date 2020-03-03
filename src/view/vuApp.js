@@ -15,7 +15,9 @@ const vuConfirm= function(vnode) {
 
 const vuMain= function(vnode) {
   const { menu }= vnode.attrs;
-  return { view() {
+  return { view(vnode) {
+    // IMPORTANT !
+    // If we use vnode inside the view function we MUST provide it for view
     return [
       m(menu),
       m('#layout', vnode.children)
