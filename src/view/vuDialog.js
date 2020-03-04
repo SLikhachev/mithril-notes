@@ -1,17 +1,26 @@
 
+// POJO Component
 export const vuDialog = {
   
   dialog: null,
   //dialog: document.getElementById('dialog'),
+  model: null,
   
   oncreate(vnode) {
-      vuDialog.dialog = vnode.dom;
+    vuDialog.dialog= vnode.dom;
+    vuDialog.model= vnode.attrs.model;  
+  },
+  
+  header(model) {
+    const hdr= model.save && model.save.err ? 'Error' : 'Confirm';
+    const wrd= model.word ? model.word : '';
+    return `${hdr} (${wrd})`;   
   },
   
   view(vnode) {
     return m('dialog#dialog', m('.dialog-content', [
       m('i.fas fa-times.dclose', { onclick: vuDialog.close }),
-        m('span.dheader', `${vnode.attrs.header} (${vnode.attrs.word})`),
+        m('span.dheader', vuDialog.header(vnode.attrs.model) ),
           vnode.children
         ])
     );
@@ -22,9 +31,10 @@ export const vuDialog = {
     return false;
   },
   
-  close (reload=false) {
+  close (e, reload=false) {
     const f= vuDialog.dialog.querySelector('form');
     if (Boolean(f)) f.reset();
+    vuDialog.model.editMode= false;
     vuDialog.dialog.close();
     if ( reload ) m.redraw();
     return false;

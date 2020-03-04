@@ -34,9 +34,11 @@ export const moModel= {
       item: {}, // note item
       error: null, // Promise all error
       save: null, // save status
-      editMode: false // view switch flag
+      editMode: false, // view switch flag
+      word: ''
     };  
     model.getItem= id => {
+      console.log(id);
       model.editMode= true;
       model.item= {};
       if (id === null) return false; 
@@ -122,7 +124,7 @@ export const moModel= {
       if ( vuDialog.dialog && vuDialog.dialog.open) vuDialog.close();
       return res; 
     }).catch( err => {
-      let msg= errMsg(err);
+      const msg= errMsg(err);
       model.save = { err: true, msg: msg };
       event.target.parentNode.classList.remove('disable');
       return Promise.reject(msg);

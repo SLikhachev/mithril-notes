@@ -4,11 +4,14 @@ import { moModel } from '../model/moModel';
 
 const clean= str=> str.replace(/[^а-яa-z0-9\.,_-]/gim,'').trim();
 
-export const vuNoteForm= function(vnode) {
-  const { model }= vnode.attrs;
-  let item;
-  //let item= Object.assign({}, model.item );
-  //console.log(item)
+const check_note= note=> {
+  if (note.title.length < 3 || note.content.length < 5 )
+    return 'Too short content';
+  return '';
+}
+
+export const vuNoteForm= function(ivnode) {
+  const { model }= ivnode.attrs;
   const _new= ()=> model.item.created ? 'Edit' : 'Add';
   const _method= ()=> model.item.created ? 'PATCH' : 'POST';
   const _cancel= ()=> moModel.cancel(model);
@@ -19,15 +22,15 @@ export const vuNoteForm= function(vnode) {
     //console.log(item);
     model.item.title= clean(model.item.title);
     model.item.content= clean(model.item.content);
-    if (model.item.title.length < 3 || model.item.content.length < 5) {
-      model.error= 'Too short content';
+    const check= check_note(model.item);
+    if ( !!check ) {
+      model.save= { err: true, msg: check }; 
       vuDialog.open();
       return false;
     } 
-    
     return moModel.formSubmit(e, model, _method() ).then(
       ()=> { model.editMode=false; return true;}).catch(
-      err => { model.error=err; vuDialog.open(); return false; } );
+      ()=> { vuDialog.open(); return false; } );
   };
   
   return {

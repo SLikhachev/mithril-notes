@@ -2,6 +2,7 @@ dialog {
    border: 1px solid rgba(0, 0, 0, 0.3);
    border-radius: 6px;
    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+   min-width: 350px;
 }
 dialog::backdrop {
   position: fixed;
@@ -17,8 +18,8 @@ dialog::backdrop {
 .dheader {
     display: block;
     line-height: 1.3em;
-    font-size: 1.3em;
-    font-weight: 700;
+    font-size: 1.2em;
+    font-weight: 300;
     margin-bottom: 1em;
 }
 .dclose {

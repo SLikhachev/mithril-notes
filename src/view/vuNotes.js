@@ -1,5 +1,7 @@
 
+import { vuDialog } from './vuDialog';
 
+// Add Note button presentation
 const addButton= vnode=> {
   const _new_note= ()=> vnode.attrs.model.getItem(null);
   return { view() { return m('.pure-g', 
@@ -12,24 +14,53 @@ const addButton= vnode=> {
   }};
 };
 
-// Single Note 
-const vuNote= note=> m('section.note', [
-  m('header.note-header', [ m('p.note-meta', [
-    note.created,
-    m('a.note-pan', m('i.fas.fa-trash' )),
-    m('a.note-pan', m('i.fas.fa-pen' )),
-    m('a.note-pan', m('i.fas.fa-check' ))
-  ]),
-    m('h2.note-title', note.title)
-  ]),
-  m('.note-content', m('p', note.content))
-]);
+// Presentation for single note
+const noteItem= model=> {
+  // trash icon's click handler
+  const _trash= e=> {
+    
+    model.getItem(e.target.getAttribute('data'));
+    model.save= { err: false, msg: 'trash' };
+    model.word= 'Delete';
+    vuDialog.open();
+  };
+  // check icon's click handler
+  const _check= e=> {
+    model.getItem( e.target.getAttribute('data'));
+    const ts= new Date();
+    model.item.completed= ts.getTime()/1000;
+    model.save= { err: false, msg: 'check' };
+    model.word= 'Complete';
+    vuDialog.open();
+  };
+  const time= ts=> ts.split('.')[0];
+  
+  // Single Note 
+  const _note= note=> m('section.note', [
+    m('header.note-header', [ m('p.note-meta', [
+      // note metadata
+      m('span', { style: 'padding: right: 3em' }, `Created: ${time( note.created )}`),
+      note.completed ? m('span', `Completed: ${time( note.completed )}`) : '', 
+      // note right panel 
+      m('a.note-pan', m('i.fas.fa-trash', { data: note.id, onclick: _trash } )),
+      m('a.note-pan', m('i.fas.fa-pen' )),
+      // if completed check icon hidden
+      note.completed ? '' : 
+      m('a.note-pan', m('i.fas.fa-check', { data: note.id, onclick: _check} ))
+    ]),
+      m('h2.note-title', { style: note.completed ? 'text-decoration: line-through': ''}, note.title)
+    ]),
+    m('.note-content', m('p', note.content))
+  ]);
+  return _note;
+}
 
 //Notes List
-export const vuNotes= function(vnode) {
-  const { model }= vnode.attrs;
+export const vuNotes= function(ivnode) {
+  const { model }= ivnode.attrs;
   const _display= ()=> model.editMode ? 'display:none': 'display:block';
-
+  const vuNote= noteItem(model);
+  
   return { view() {
     return model.error ? m('h2', {style: 'color:red'}, model.error) :
     !model.list ? m('h1', '...LOADING' ) :
