@@ -2,7 +2,7 @@
 import { vuDialog } from './vuDialog';
 import { moModel } from '../model/moModel';
 
-const clean= str=> str.replace(/[^а-яa-z0-9\.,_-]/gim,'').trim();
+const clean= str=> str.replace(/[^а-яa-z0-9\.\s,_-]/gim,'').trim();
 
 const check_note= note=> {
   if (note.title.length < 3 || note.content.length < 5 )
@@ -25,6 +25,7 @@ export const vuNoteForm= function(ivnode) {
     const check= check_note(model.item);
     if ( !!check ) {
       model.save= { err: true, msg: check }; 
+      model.word= 'Edit';
       vuDialog.open();
       return false;
     } 

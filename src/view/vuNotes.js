@@ -27,12 +27,17 @@ const noteItem= model=> {
   // check icon's click handler
   const _check= e=> {
     model.getItem( e.target.getAttribute('data'));
-    const ts= new Date();
-    model.item.completed= ts.getTime()/1000;
+    model.item.completed= new Date().toISOString().split('.')[0].replace('T', ' ');
     model.save= { err: false, msg: 'check' };
     model.word= 'Complete';
     vuDialog.open();
   };
+  // edit this note
+  const _edit= e=> {
+    model.getItem( e.target.getAttribute('data'));
+    model.editMode= true;
+  };
+  
   const time= ts=> ts.split('.')[0];
   
   // Single Note 
@@ -40,13 +45,13 @@ const noteItem= model=> {
     m('header.note-header', [ m('p.note-meta', [
       // note metadata
       m('span', { style: 'padding: right: 3em' }, `Created: ${time( note.created )}`),
-      note.completed ? m('span', `Completed: ${time( note.completed )}`) : '', 
+      note.completed ? m('span', `  Completed: ${time( note.completed )}`) : '', 
       // note right panel 
       m('a.note-pan', m('i.fas.fa-trash', { data: note.id, onclick: _trash } )),
-      m('a.note-pan', m('i.fas.fa-pen' )),
-      // if completed check icon hidden
-      note.completed ? '' : 
-      m('a.note-pan', m('i.fas.fa-check', { data: note.id, onclick: _check} ))
+      note.completed ? '' : [
+        m('a.note-pan', m('i.fas.fa-pen', {data: note.id, onclick: _edit } )),
+        m('a.note-pan', m('i.fas.fa-check', { data: note.id, onclick: _check} ))
+      ]
     ]),
       m('h2.note-title', { style: note.completed ? 'text-decoration: line-through': ''}, note.title)
     ]),

@@ -120,7 +120,7 @@ export const moModel= {
       headers: model.headers
     }).then( res => {
       event.target.parentNode.classList.remove('disable');
-      if (model.list) moModel.getList(model);
+      if ( !!model.list ) moModel.getList(model);
       if ( vuDialog.dialog && vuDialog.dialog.open) vuDialog.close();
       return res; 
     }).catch( err => {

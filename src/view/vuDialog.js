@@ -33,8 +33,10 @@ export const vuDialog = {
   
   close (e, reload=false) {
     const f= vuDialog.dialog.querySelector('form');
+    // if dialog children had form inside reset it 
     if (Boolean(f)) f.reset();
-    vuDialog.model.editMode= false;
+    if ( vuDialog.model.word !== 'Edit') 
+      vuDialog.model.editMode= false;
     vuDialog.dialog.close();
     if ( reload ) m.redraw();
     return false;
