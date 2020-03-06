@@ -4,9 +4,16 @@ import { vuNotes } from './vuNotes';
 import { vuNoteForm } from './vuNoteForm';
 import { vuDialog } from './vuDialog';
 
+// modal dialog content
 const vuModal= function(ivnode) {
+  
+  // state store exposed initially at the closure call
   const { model }= ivnode.attrs;
+  
+  // handlers are stored locally in closure
+  // this is feature of such implementation  
   const _cancel= ()=> vuDialog.close();
+  // confirm button click handler
   const _confirm= e=> {
     if ( model.save.msg === 'trash')
       return moModel.formSubmit(e, model, 'DELETE');
@@ -25,10 +32,12 @@ const vuModal= function(ivnode) {
       ]; //));
   }};
 }
-
+// Modal dialog component
 const vuModalDialog= model=> m(vuDialog, { model }, m(vuModal, { model }) );
 
+//Main view component 
 const vuMain= function(ivnode) {
+  // We use ivnode as argument case it is initial vnode
   const { menu }= ivnode.attrs;
   return { view(vnode) {
     // IMPORTANT !
@@ -43,8 +52,10 @@ const vuMain= function(ivnode) {
 // view wrapper needed for complex navigation if any
 export const vuView= (appMenu, view)=> m(vuMain, appMenu, view);
 
+// Application view
 export const vuApp= function(ivnode) {
   const { model }= ivnode.attrs;
+  //initially get notes
   moModel.getList( model );
   
   return { view() { 

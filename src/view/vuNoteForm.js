@@ -2,8 +2,10 @@
 import { vuDialog } from './vuDialog';
 import { moModel } from '../model/moModel';
 
+//remove all wild symbols
 const clean= str=> str.replace(/[^а-яa-z0-9\.\s,_-]/gim,'').trim();
 
+// strings length check
 const check_note= note=> {
   if (note.title.length < 3 || note.content.length < 5 )
     return 'Too short content';
@@ -17,9 +19,9 @@ export const vuNoteForm= function(ivnode) {
   const _cancel= ()=> moModel.cancel(model);
   const _display= ()=> model.editMode ? 'display:block': 'display:none';
   
+  // form submit handler
   const _submit= e=> {
     e.preventDefault();
-    //console.log(item);
     model.item.title= clean(model.item.title);
     model.item.content= clean(model.item.content);
     const check= check_note(model.item);

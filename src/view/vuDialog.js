@@ -1,5 +1,6 @@
 
 // POJO Component
+// Simple dialog component wrapper
 export const vuDialog = {
   
   dialog: null,
@@ -8,7 +9,7 @@ export const vuDialog = {
   
   oncreate(vnode) {
     vuDialog.dialog= vnode.dom;
-    vuDialog.model= vnode.attrs.model;  
+    vuDialog.model= vnode.attrs.model;
   },
   
   header(model) {
@@ -33,7 +34,7 @@ export const vuDialog = {
   
   close (e, reload=false) {
     const f= vuDialog.dialog.querySelector('form');
-    // if dialog children had form inside reset it 
+    // if dialog children had form inside then reset it 
     if (Boolean(f)) f.reset();
     if ( vuDialog.model.word !== 'Edit') 
       vuDialog.model.editMode= false;

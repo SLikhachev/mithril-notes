@@ -1,9 +1,11 @@
 
+// simple responsive application menu component
+
 import { appApi, appMenu } from '../appApi';
 
-// clojure
+// closure
 export const vuNavBar= function () {
-  
+  // links for dom nodes
   let tucked_menu, toggled_link;
   // toogle class list for small screen
   const _toggle= ()=> {
