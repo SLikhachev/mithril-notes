@@ -44,7 +44,7 @@ const noteItem= model=> {
   const _time= ts=> ts.split('.')[0];
   
   // Single Note 
-  const _note= note=> m('section.note', [
+  const _note= note=> m('section.note', {key: note.id}, [
     m('header.note-header', [ m('p.note-meta', [
       // note metadata
       m('span', { style: 'padding: right: 3em' }, `Created: ${_time( note.created )}`),
