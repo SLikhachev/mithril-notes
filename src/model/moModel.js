@@ -4,15 +4,16 @@ import { vuDialog } from '../view/vuDialog';
 // backend REST server listening on 
 export const _schema= ()=> 'http://localhost:5000/'; // see final slash 
 
+// errors response handler
 export const errMsg= function(error){
   if ( !error)
-    return 'SERVER ERROR (see logs)'
+    return 'SERVER ERROR (see logs)';
   const e= error.response ? error.response: 'SERVER ERROR (no response)' ;
   return e.details ? e.details : e.message ? e.message : e;
 }
 
-// namespae for app model
-// PostgREST SQL model, assumed existance 'ddel' table field  
+// namespace for app model
+// PostgREST SQL model, assumed existence 'ddel' table field  
 export const moModel= {
   // getModel:: Object-> Object
   getModel(
@@ -35,13 +36,14 @@ export const moModel= {
       error: null, // Promise all error
       save: null, // save status
       editMode: false, // view switch flag
-      word: ''
+      word: '' // dialog header word
     };  
     model.getItem= id => {
-      console.log(id);
-      model.editMode= true;
       model.item= {};
-      if (id === null) return false; 
+      if ( !id ) {
+        model.editMode= true;
+        return false;
+      }
       const key= model.key;
       for ( let it of model.list ) {
         if (it[key] == id) {
@@ -60,7 +62,8 @@ export const moModel= {
     model.editMode=false;
     return moModel.getList(model);
   },
-
+  
+  // simple m.request() wrapper to get list from postgREST server
   // getList:: Object-> Promise
   getList (model) {
     model.list= null;
@@ -68,13 +71,13 @@ export const moModel= {
     const id = model.order_by ? model.order_by : 'id';
     let url= `${model.url}`;
     let sign= url.includes('?') ? '&': '?';
-    // GET actual NOT DELETED (ddel field > 0)
+    // GET actual NOT DELETED (ddel field > 0) items
     if ( model.editable && model.editable.indexOf('del') >= 0) {
       url= `${url}${sign}ddel=eq.0`;
       sign= '&';
     }
     url =`${_schema('rest')}${url}${sign}order=${id}.asc`;
-    console.log(url);
+    //console.log(url);
     return m.request({
       method: method,
       url: url,
@@ -92,6 +95,7 @@ export const moModel= {
     });
   },
   
+  // simple m.request() wrapper  
   // formSubmit:: Object-> Object-> String-> Promise
   formSubmit(event, model, method) {
     //console.log(item);
@@ -111,7 +115,7 @@ export const moModel= {
       data= { ddel: 1 };
       _method= 'PATCH';
     }
-    
+    // save status object
     model.save = { err: false, msg: '' };
     return m.request({
       url: url,

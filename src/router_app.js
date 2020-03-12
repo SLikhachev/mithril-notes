@@ -4,7 +4,7 @@ import { moModel } from './model/moModel';
 import { vuView, vuApp } from './view/vuApp';
 import { vuNavBar } from './view/vuNavBar';
 
-// application route
+// application router
 const appRouter = { [appApi.root]: {
   render() {
     const view = m(vuApp, {
