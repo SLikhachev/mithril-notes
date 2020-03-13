@@ -10,8 +10,8 @@ const vuModal= function(ivnode) {
   // state store exposed initially at the closure call
   const { model }= ivnode.attrs;
   
-  // handlers are stored locally in closure
-  // this is feature of such implementation  
+  // handlers are stored locally in the closure
+  // this is a feature of such implementation  
   const _cancel= ()=> vuDialog.close();
   // confirm button click handler
   const _confirm= e=> {

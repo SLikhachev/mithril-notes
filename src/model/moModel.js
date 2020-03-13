@@ -25,7 +25,7 @@ export const moModel= {
   * order_by - string "order by" with initially SELECT 
   * editable - array defines is model could changed
 */
-    let model = {
+    const model = {
       url: url,
       method: method,
       order_by: order_by,
