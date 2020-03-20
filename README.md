@@ -417,7 +417,7 @@ components to the inner `open()` and `close()` functions of the dialog component
 
 ### Conclusion
 
-We wrote the small SPA with the javascript и mithril.js. We have tried to follow the mithril's
+We wrote the small SPA with the javascript and mithril.js. We have tried to follow the mithril's
 idiomatic approach. We want to pay your attention - this is just javascript.  This approach let 
 to encapsulate small pieces of code, to isolate the components' mechanic and to use the common state 
 for the all components. 
